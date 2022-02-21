@@ -9,10 +9,10 @@ interface AuthInputProps {
 
 export default function AuthInput(props: AuthInputProps) {
   return (
-    <div className="flex flex-col">
-      <label htmlFor=""></label>
+    <div className="flex flex-col mb-5">
+      <label htmlFor="" className="mb-1">{props.label}</label>
       <input
-        className="h-10 p-3"
+        className="h-16 p-3 bg-gray-200 hover:bg-gray-300 rounded-md focus:outline-none"
         type={props.tipo ?? 'text'}
         value={props.valor}
         placeholder={props.placeholder}
