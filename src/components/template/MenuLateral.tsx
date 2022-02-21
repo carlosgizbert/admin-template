@@ -5,6 +5,7 @@ import { IconNotification } from '../icons/index'
 import { IconLogout } from '../icons/index'
 import Logo from './Logo'
 import useAuth from './../../data/hook/useAuth';
+import Link from 'next/link';
 
 export default function MenuLateral() {
 
@@ -15,12 +16,14 @@ export default function MenuLateral() {
     flex flex-col
     dark:bg-gray-900
     ">
-      <div className="
+      <Link href="/" passHref>
+        <div className="
       flex flex-col items-center justify-center
       w-20 h-20 
-      bg-gradient-to-r from-indigo-500 to-purple-800">
-        <Logo />
-      </div>
+      bg-gradient-to-r from-indigo-500 to-purple-800 cursor-pointer">
+          <Logo />
+        </div>
+      </Link>
       <ul className="flex-grow">
         <MenuItem icon={IconHome} text="Início" url="/" />
         <MenuItem icon={IconSettings} text="Ajustes" url="/ajustes" />

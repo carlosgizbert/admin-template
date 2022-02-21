@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import loading from '../../../public/images/loading.gif'
+import Head from 'next/head';
 import useAuth from './../../data/hook/useAuth';
 import router from 'next/router';
 
@@ -9,7 +10,19 @@ export default function ForcarAutenticacao(props) {
 
   function renderizarConteudo() {
     return (
+      // protegendo ainda mais as rotas pelo head
       <>
+        <Head>
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+            if(!document.cookie?.includes("admin-template-auth")){
+              window.location.href = "/autenticacao"
+            }
+          `
+            }}
+          />
+        </Head>
         {props.children}
       </>
     )
@@ -17,8 +30,7 @@ export default function ForcarAutenticacao(props) {
 
   function renderizarCarregando() {
     return (
-      <div className={`flex 
-      flex justify-center items-center h-screen`}>
+      <div className={`flex justify-center items-center h-screen`}>
         <Image src={loading} alt="Circulo girando ao carregar conteúdo" />
       </div>
     )
