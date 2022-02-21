@@ -6,7 +6,9 @@ import Cookies from 'js-cookie'
 
 interface AuthContextProps {
   usuario?: Usuario
+  carregando?: boolean
   loginGoogle?: () => Promise<void>
+  logout?: () => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextProps>({})
@@ -59,18 +61,34 @@ export function AuthProvider(props) {
     )
     configurarSessao(resp.user)
     router.push('/')
+  }
 
+  async function logout() {
+    try {
+      setCarregando(true)
+      await firebase.auth().signOut()
+      await configurarSessao(null)
+    } finally {
+      setCarregando(false)
+      router.push('/autenticacao')
+    }
   }
 
   useEffect(() => {
-    const cancelar = firebase.auth().onIdTokenChanged(configurarSessao)
-    return () => cancelar()
+    if (Cookies.get('admin-template-auth')) { // caso usuario logou em algum momento, obtem usuário de uma sessão antiga, caso não, ele nao tenta obter usuário
+      const cancelar = firebase.auth().onIdTokenChanged(configurarSessao)
+      return () => cancelar()
+    } else {
+      setCarregando(false)
+    }
   }, [])
 
   return (
     <AuthContext.Provider value={{
       usuario,
-      loginGoogle
+      carregando,
+      loginGoogle,
+      logout
     }}>
       {props.children}
     </AuthContext.Provider>
