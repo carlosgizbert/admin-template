@@ -10,16 +10,18 @@ export default function Autenticacao() {
   const [email, setEmail] = useState('')
   const [senha, setSenha] = useState('')
 
-  const { usuario, loginGoogle } = useAuth()
+  const { login, loginGoogle, cadastrar } = useAuth()
 
-  function submeter() {
-    if (modo === 'login') {
-      console.log('logar banco')
-      exibirErro('Ocorreu um erro ao tentar logar')
-    }
-    else {
-      console.log('cadastrar usuário')
-      exibirErro('Ocorreu um erro ao tentar cadastrar')
+  async function submeter() {
+    try {
+      if (modo === 'login') {
+        await login(email, senha)
+      }
+      else {
+        await cadastrar(email, senha)
+      }
+    } catch (e) {
+      exibirErro(e?.message ?? 'Erro inesperado')
     }
   }
 
@@ -63,17 +65,6 @@ export default function Autenticacao() {
             obrigatorio
             valorMudou={setSenha}
           />
-
-          {modo === 'cadastro' && (
-            <AuthInput
-              label="Repita a senha"
-              tipo="password"
-              valor={senha}
-              placeholder="Insira a senha"
-              obrigatorio
-              valorMudou={setSenha}
-            />
-          )}
 
         </div>
         <button

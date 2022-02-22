@@ -17,19 +17,12 @@ export function AppProvider(props) {
   if (typeof window !== 'undefined') {
     localStorageTheme = localStorage.getItem('theme');
   }
-
   const [theme, setTheme] = useState<Theme>(localStorageTheme)
 
   function changeTheme() {
-    if (typeof window !== 'undefined') {
-      if (theme === '') {
-        localStorage.setItem('theme', 'dark')
-      }
-      if (theme === 'dark') {
-        localStorage.setItem('theme', '')
-      }
-    }
-    setTheme(localStorage.getItem('theme'))
+    const novoTema = theme === '' ? 'dark' : ''
+    setTheme(novoTema)
+    localStorage.setItem('theme', novoTema)
   }
 
   return (
